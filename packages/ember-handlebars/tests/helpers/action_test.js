@@ -186,3 +186,39 @@ test("should be able to use action more than once for the same event within a vi
   ok(!deleteWasCalled);
   ok(originalEventHandlerWasCalled);
 });
+
+test("should work properly in an #each block", function() {
+  var eventHandlerWasCalled = false;
+
+  view = Ember.View.create({
+    items: Ember.A([1, 2, 3, 4]),
+    template: Ember.Handlebars.compile('{{#each items}}<a href="#" {{action "edit"}}>click me</a>{{/each}}'),
+    edit: function() { eventHandlerWasCalled = true; }
+  });
+
+  appendView();
+
+  ok('function' === typeof view.get('click'));
+
+  view.$('a').trigger('click');
+
+  ok(eventHandlerWasCalled);
+});
+
+test("should work properly in a #with block", function() {
+  var eventHandlerWasCalled = false;
+
+  view = Ember.View.create({
+    something: {ohai: 'there'},
+    template: Ember.Handlebars.compile('{{#with something}}<a href="#" {{action "edit"}}>click me</a>{{/with}}'),
+    edit: function() { eventHandlerWasCalled = true; }
+  });
+
+  appendView();
+
+  ok('function' === typeof view.get('click'));
+
+  view.$('a').trigger('click');
+
+  ok(eventHandlerWasCalled);
+});
