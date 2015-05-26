@@ -320,13 +320,13 @@ Ember.TEMPLATES = {};
   MyTextInput = Ember.View.extend({
     tagName: 'input',
     attributeBindings: ['disabled'],
-    disabled: function() {
+    disabled: Ember.computed(function() {
       if (someLogic) {
         return true;
       } else {
         return false;
       }
-    }.property()
+    })
   });
   ```
 
